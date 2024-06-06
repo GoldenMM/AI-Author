@@ -1,6 +1,7 @@
 from openai import OpenAI
 import os
 from src.book import *
+import tiktoken
 
 class Writer():
     '''Class for generating text using OpenAI's GPT-3.5-turbo model. Contains and OpenAI client on initialization.
@@ -43,3 +44,7 @@ class Writer():
         model="gpt-3.5-turbo",
         )
         return chat_completion.choices[0].message.content
+    
+    def count_tokens(self, text: str) -> int:
+        '''Counts the number of tokens in the text.'''
+        return len(text.split())
