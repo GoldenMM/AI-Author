@@ -19,7 +19,7 @@ class Section():
         
         
     def __repr__(self):
-        return f"###{self.title}\n{self.content}"
+        return f"### {self.title}\n{self.content}"
     
     #TODO: Implement this method when writer is ready  
     def split(self):
@@ -48,7 +48,7 @@ class Chapter():
         pass
     
     def __repr__(self) -> str:
-        ret = f"##{self.title}\n"
+        ret = f"## {self.title}\n"
         for section in self.sections:
             ret += f"{self.sections[section].content}\n\n"
         return ret
@@ -80,7 +80,7 @@ class Book():
         pass
     
     def __repr__(self) -> str:
-        ret = f"#{self.title}\n{self.summary}\n\n"
+        ret = f"# {self.title}\n{self.summary}\n\n"
         for chapter in self.chapters:
             ret += f"{self.chapters[chapter]}\n\n"
         return ret
