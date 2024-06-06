@@ -1,6 +1,5 @@
 from openai import OpenAI
 import os
-from src.book import *
 import tiktoken
 
 class Writer():
@@ -10,6 +9,7 @@ class Writer():
         self.client = OpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
         )
+        self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
     
     def generate_text(self, prompt) -> str:
         '''Basic text generation using GPT-3.5-turbo model.
@@ -25,7 +25,6 @@ class Writer():
         )
         return chat_completion.choices[0].message.content
     
-
     def generate_book_summary(self, prompt: str) -> str:
         '''Generates a summary of the book.'''
         chat_completion = self.client.chat.completions.create(
@@ -45,6 +44,25 @@ class Writer():
         )
         return chat_completion.choices[0].message.content
     
-    def count_tokens(self, text: str) -> int:
-        '''Counts the number of tokens in the text.'''
-        return len(text.split())
+    def generate_toc(self, title: str, summary: str) -> str:
+        '''Generates a table of contents for the book.'''
+        chat_completion = self.client.chat.completions.create(
+        messages=[
+            {
+                "role": "system",
+                "content": f'''You are an expert writer and you have been asked to begin the first steps of writing a book.
+                            You have the book's title as "{title}" and the book's summary as "{summary}".
+                            You are to generate a table of contents for the book based on the title and summary.
+                            Reply in the following json format for as many chapters as you see fit:
+                            "1": {{"chapter_title: "<chapter1_title>", "summary": "<chapter1_summary>"}},
+                            "2": {{"chapter_title: "<chapter2_title>", "summary": "<chapter2_summary>"}},
+                            '''
+            }
+        ],
+        model="gpt-3.5-turbo",
+        )
+        return chat_completion.choices[0].message.content
+    
+    def count_tokens(self, messages: dict) -> int:
+        '''Counts the number of tokens in the text. Used to check if the token limit has been exceeded.'''
+        return sum([len(self.encoding.encode(message["content"])) for message in messages])
