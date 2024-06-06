@@ -1,24 +1,15 @@
 from openai import OpenAI
 import os
+from src.book import *
+from json import loads
 
-OPENAI_KEY = os.getenv("OPENAI_API_KEY")
-
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-)
-
-def generate_text(prompt):
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "user",
-            "content": prompt,
-        }
-    ],
-    model="gpt-3.5-turbo",
-    )
-    return chat_completion.choices[0].message.content
+from src.writer import Writer
 
 
+writer = Writer()
 
-print(generate_text("This is a test"))
+basic_info = loads(writer.generate_book_summary("A book about parenting kids with ADHD."))
+
+print(basic_info['title'])
+print(basic_info['summary'])
+
