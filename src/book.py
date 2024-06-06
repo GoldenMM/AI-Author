@@ -27,9 +27,6 @@ class Chapter():
         self.summary = summary
         self.sections = []
         self.edited = False
-         
-    def add_section_tail(self, section: Section):
-        self.content.append(section)
     
     #TODO: Implement this method when writer is ready    
     def split_section(self, section: Section):
