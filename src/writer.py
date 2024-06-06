@@ -134,7 +134,8 @@ class Writer():
                         The section should make a point or present an idea unique to the chapter.
                         keep your response between 300 and 1000 words.
                         You should also keep in mind the token limit of 4096 tokens.
-                        Format your response in Markdown. Do not include the title of the section in your response.
+                        Format your response in Markdown, keeping in mind that each section title is already under ### sub header.
+                        Do not include the title of the section in your response.
                         '''
         })
         
