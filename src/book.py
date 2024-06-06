@@ -19,7 +19,7 @@ class Section():
         
         
     def __repr__(self):
-        return f"### {self.title}\n{self.content}"
+        return f"{self.content}"
     
     #TODO: Implement this method when writer is ready  
     def split(self):
