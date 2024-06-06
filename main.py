@@ -1,8 +1,4 @@
-from openai import OpenAI
-import os
 from src.book import *
-from json import loads
-import tiktoken
 from src.writer import Writer
 
 

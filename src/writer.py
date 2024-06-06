@@ -6,6 +6,7 @@ class Writer():
     '''Class for generating text using OpenAI's GPT-3.5-turbo model. Contains and OpenAI client on initialization.
     Has methods for generating text based on prompts or existing Book data.'''
     def __init__(self):
+        print("Initializing Writer...")
         self.client = OpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
         )
@@ -26,7 +27,7 @@ class Writer():
         return chat_completion.choices[0].message.content
     
     def generate_book_summary(self, prompt: str) -> str:
-        '''Generates a summary of the book.'''
+        '''Generates a summary and title of the book.'''
         chat_completion = self.client.chat.completions.create(
         messages=[
             {
@@ -36,8 +37,10 @@ class Writer():
                             "{prompt}".
                             You are to generate a title for the book and a summary of the book's ideas and the points it will make.
                             Reply in the following json format:
-                            "title: "<title>",
-                            "summary": "<summary>"'''
+                            {{
+                                "title: "<title>",
+                                "summary": "<summary>
+                            }}"'''
             }
         ],
         model="gpt-3.5-turbo",
@@ -45,7 +48,7 @@ class Writer():
         return chat_completion.choices[0].message.content
     
     def generate_toc(self, title: str, summary: str) -> str:
-        '''Generates a table of contents for the book.'''
+        '''Generates a table of contents and chapter summaries for the book.'''
         chat_completion = self.client.chat.completions.create(
         messages=[
             {
@@ -54,8 +57,13 @@ class Writer():
                             You have the book's title as "{title}" and the book's summary as "{summary}".
                             You are to generate a table of contents for the book based on the title and summary.
                             Reply in the following json format for as many chapters as you see fit:
-                            "1": {{"chapter_title: "<chapter1_title>", "summary": "<chapter1_summary>"}},
-                            "2": {{"chapter_title: "<chapter2_title>", "summary": "<chapter2_summary>"}},
+                            {{
+                                "<chapter_number>": {{
+                                    "chapter_title": "<chapter_title>",
+                                    "summary": "<chapter_summary>"
+                                }},
+                                ...
+                            }}
                             '''
             }
         ],

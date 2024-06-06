@@ -2,10 +2,15 @@ from src.writer import Writer
 from json import loads
         
 class Section():
-    def __init__(self, title, summary):
+    def __init__(self, title, summary, chapter):
         self.title = title
-        self.content = None
         self.summary = summary
+        self.chapter = chapter
+        self.edited = False
+        
+        
+        self.content = None
+        
         
     def __repr__(self):
         return self.title
@@ -21,6 +26,7 @@ class Chapter():
         self.title = title
         self.summary = summary
         self.sections = []
+        self.edited = False
          
     def add_section_tail(self, section: Section):
         self.content.append(section)
@@ -36,19 +42,19 @@ class Chapter():
 class Book():
     def __init__(self, prompt: str):
         self.writer = Writer()
+        self.edited = False
         
         # Generate title and summary
+        print("Generating title and summary...")
         title_and_summary = loads(self.writer.generate_book_summary(prompt))
         self.title = title_and_summary['title']
         self.summary = title_and_summary['summary']
+        print("Title and summary generated.")
         
+        #Generate table of contents and chapter summaries
+        print("Generating table of contents and chapter summaries...")
         self.toc = loads(self.writer.generate_toc(self.title, self.summary))
-        
         self.chapters = {}  # chapter number: Chapter object
         for chapter in self.toc:
             self.chapters[chapter] = Chapter(self.toc[chapter]['chapter_title'], self.toc[chapter]['summary'])
-
-    def __repr__(self) -> str:
-        return f'''|{self.title}|
-        ------------------------- 
-        {self.chapters["TOC"]}'''
+        print("Table of contents and chapter summaries generated.")
