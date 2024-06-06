@@ -1,10 +1,12 @@
 from src.book import *
 from src.writer import Writer
+import os
 
 
 
-book = Book("Parenting kids with ADHD")
+# book = Book("Parenting kids with ADHD")
 
-for chapter in book.chapters:
-    print(book.chapters[chapter])
+with open("book.md", "r") as f:
+    print(len(f.read().split(" ")))
+
 

@@ -92,7 +92,7 @@ class Writer():
                             Reply in the following json format for as many sections as you see fit:
                             {{
                                 "<section_number>": {{
-                                    "section_title": "<section_title>",
+                                    "title": "<section_title>",
                                     "summary": "<section_summary>"
                                 }},
                                 ...
@@ -122,7 +122,7 @@ class Writer():
             messages.append({
                 "role": "system",
                 "content": f'''
-                            "{section['section_title']}": "{section['summary']}"
+                            "{sections_summaries[section].title}": "{sections_summaries[section].summary}"
                             '''
             })
             

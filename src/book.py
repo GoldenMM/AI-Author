@@ -1,6 +1,7 @@
+from __future__ import annotations
 from src.writer import Writer
 from json import loads
-from __future__ import annotations
+
         
 class Section():
     def __init__(self, title: str, summary: str, chapter: Chapter):
@@ -9,11 +10,12 @@ class Section():
         self.chapter = chapter
         self.edited = False
         
-        
+        print(f"Generating content for section {self.title}...")
         self.content = self.chapter.book.writer.generate_section_content(self.title,
                                                                          self.summary,
                                                                          self.chapter.summary,
                                                                          self.chapter.sections)
+        print(f"Content for section {self.title} generated.\n")
         
         
     def __repr__(self):
@@ -35,11 +37,10 @@ class Chapter():
         # Generate sections
         print(f"Generating sections for chapter {self.title}...")
         self.sections = {}
-        for section in loads(self.book.writer.generate_chapter_sections(self.title, self.summary)):
-            print(f"Generating section {section['title']}...")
-            self.sections[section] = Section(section['title'], section['summary'], self)
-            print(f"Section {section['title']} generated.")
-        print(f"Sections for chapter {self.title} generated.")
+        sections_temp = loads(self.book.writer.generate_chapter_sections(self.title, self.summary))
+        for section in sections_temp:
+            self.sections[section] = Section(sections_temp[section]['title'], sections_temp[section]['summary'], self)
+        print(f"Sections for chapter {self.title} generated. \n")
     
     #TODO: Implement this method when writer is ready    
     def split_section(self, section: Section):
@@ -49,7 +50,7 @@ class Chapter():
     def __repr__(self) -> str:
         ret = f"##{self.title}\n"
         for section in self.sections:
-            ret += f"{self.sections[section]}\n\n"
+            ret += f"{self.sections[section].content}\n\n"
         return ret
         
 class Book():
@@ -63,15 +64,15 @@ class Book():
         title_and_summary = loads(self.writer.generate_book_summary(prompt))
         self.title = title_and_summary['title']
         self.summary = title_and_summary['summary']
-        print("Title and summary generated.")
+        print("Title and summary generated.\n")
         
         #Generate table of contents and chapter summaries
         print("Generating table of contents and chapter summaries...")
         self.toc = loads(self.writer.generate_toc(self.title, self.summary))
         self.chapters = {}  # chapter number: Chapter object
         for chapter in self.toc:
-            self.chapters[chapter] = Chapter(self.toc[chapter]['chapter_title'], self.toc[chapter]['summary'])
-        print("Table of contents and chapter summaries generated.")
+            self.chapters[chapter] = Chapter(self.toc[chapter]['chapter_title'], self.toc[chapter]['summary'], self)
+        print("Table of contents and chapter summaries generated.\n")
     
     #TODO: Implement this method when book generation is done
     def parse(self):
@@ -80,8 +81,6 @@ class Book():
     
     def __repr__(self) -> str:
         ret = f"#{self.title}\n{self.summary}\n\n"
-        
-        
         for chapter in self.chapters:
             ret += f"{self.chapters[chapter]}\n\n"
         return ret
