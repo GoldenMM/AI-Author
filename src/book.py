@@ -37,6 +37,7 @@ class Chapter():
         return f"{self.title}"
         
 class Book():
+    '''A class representing a book and its contents. The constructor builds the book's contents from a prompt'''
     def __init__(self, prompt: str):
         self.writer = Writer()
         self.edited = False
@@ -55,3 +56,9 @@ class Book():
         for chapter in self.toc:
             self.chapters[chapter] = Chapter(self.toc[chapter]['chapter_title'], self.toc[chapter]['summary'])
         print("Table of contents and chapter summaries generated.")
+    
+    #TODO: Implement this method when book generation is done
+    def parse(self):
+        '''Parses the book's contents for saving.'''
+        pass
+        

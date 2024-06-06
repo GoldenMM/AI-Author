@@ -32,7 +32,8 @@ class Writer():
         messages=[
             {
                 "role": "system",
-                "content": f'''You are an expert writer and you have been asked to begin the first steps of writing a book.
+                "content": f'''
+                            You are an expert writer and you have been asked to begin the first steps of writing a book.
                             The high level idea of the book is the following:
                             "{prompt}".
                             You are to generate a title for the book and a summary of the book's ideas and the points it will make.
@@ -40,7 +41,8 @@ class Writer():
                             {{
                                 "title: "<title>",
                                 "summary": "<summary>
-                            }}"'''
+                            }}
+                            '''
             }
         ],
         model="gpt-3.5-turbo",
@@ -53,7 +55,8 @@ class Writer():
         messages=[
             {
                 "role": "system",
-                "content": f'''You are an expert writer and you have been asked to begin the first steps of writing a book.
+                "content": f'''
+                            You are an expert writer and you have been asked to begin the first steps of writing a book.
                             You have the book's title as "{title}" and the book's summary as "{summary}".
                             You are to generate a table of contents for the book based on the title and summary.
                             Reply in the following json format for as many chapters as you see fit:
