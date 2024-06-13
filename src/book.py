@@ -59,6 +59,8 @@ class Book():
         self.writer = Writer()
         self.edited = False
         
+        #TODO: Change this to be in its own methods we can have a save and load book to edit across sessions
+        
         # Generate title and summary
         print("Generating title and summary...")
         title_and_summary = loads(self.writer.generate_book_summary(prompt))
