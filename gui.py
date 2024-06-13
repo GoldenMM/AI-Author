@@ -1,3 +1,6 @@
+# TODO: Change this all to be a class which is ran by the main.py file.
+
+
 import customtkinter as ctk
 
 ctk.set_appearance_mode("dark")
